@@ -140,9 +140,9 @@ evidencias/request.png
 
 Inclúyala en el informe:
 
-``` markdown
+
 ![Análisis de la solicitud HTTP](evidencias/request.png)
-```
+
 
 ### Análisis
 
@@ -206,9 +206,9 @@ evidencias/dom.png
 
 Inclúyala aquí:
 
-``` markdown
+
 ![Inspección y modificación del DOM](evidencias/dom.png)
-```
+
 
 ### Análisis
 
@@ -271,9 +271,9 @@ evidencias/interaccion.png
 
 Inclúyala aquí:
 
-``` markdown
+
 ![Interacción observada en Network](evidencias/interaccion.png)
-```
+
 
 ### Análisis
 
@@ -301,13 +301,20 @@ Reemplace el siguiente bloque con su diagrama:
 
 ``` mermaid
 flowchart LR
-    A[Usuario] --> B[Navegador]
-    B --> C[Solicitud HTTP]
+    U[Usuario] -->|Hace clic| I[Interfaz]
+    I --> N[Navegador]
+    N -->|Ejecuta Script| J[JavaScript]
+    J -->|Genera| SH[Solicitud HTTP POST]
+    SH --> S[Servidor de Analytics]
+    S -->|Devuelve código 204| RH[Respuesta HTTP]
+    RH --> N
+    N -->|Interpreta estado local| D[DOM]
+    D --> I
 ```
 
 ------------------------------------------------------------------------
 
-# 7. Observado vs. inferido
+# 7. Observado vs. inferido
 
 Una herramienta de desarrollo permite observar una parte del sistema,
 pero no necesariamente todo lo que ocurre en el servidor.
@@ -316,15 +323,15 @@ Clasifique sus hallazgos:
 
 ## Elementos observados directamente
 
--   
--   
--   
+-   Las solicitudes HTTP emitidas al cargar y operar la página web, incluyendo los métodos de solicitud (GET, POST) y los dominios o URL exactas.
+-   El contenido de la estructura HTML original enviada y cómo el navegador construye y actualiza temporalmente el DOM a partir de esta.
+-   Los códigos de estado retornados por cada servidor (como el 200 OK y el 204 No Content), los tiempos de carga (ej. 24 ms) y los tamaños de los recursos.
 
 ## Elementos inferidos
 
--   
--   
--   
+-   Que la descarga directa de un archivo .zip está gestionada tras bambalinas por código backend en los servidores propios, al cual no se tiene acceso para inspeccionar su lógica.
+-   El procesamiento y almacenamiento de datos persistentes que Google Analytics realiza internamente con el payload (la carga útil) tras retornar el código 204.
+-   La permanencia y estado real de los archivos de origen de la interfaz en los discos del servidor, deduciendo que la edición de un botón desde "Elements" no los modifica realmente.
 
 > No presente como observado un proceso interno que las herramientas del
 > navegador no permitan comprobar directamente.
@@ -335,9 +342,9 @@ Clasifique sus hallazgos:
 
 Redacte **tres conclusiones técnicas** derivadas de la práctica.
 
-1.  
-2.  
-3.  
+1.  **Manipulación aislada del cliente (Frontend):** Las modificaciones ejecutadas a través del inspector del navegador sobre el DOM afectan de manera estricta al entorno local y temporal generado para la sesión del usuario. Esto pone de manifiesto la estructura de división de responsabilidades del modelo cliente-servidor; la manipulación del DOM no reescribe, ni compromete el estado en el que reside el archivo original en el servidor.
+2.  **Arquitectura de recursos distribuidos:** Las trazas recabadas en la herramienta de Red indican que la carga exitosa y el despliegue funcional de un sitio web rara vez dependen de una sola conexión. Más bien, obedece a una orquestación en paralelo que solicita archivos CSS, JS, gráficas y servicios externos desde varios dominios, factor que evidencia el papel vital de cada componente en la presentación de la página.
+3.  **Procesamiento de peticiones asíncronas:** Las operaciones dinámicas en las que el usuario participa no interrumpen forzosamente el flujo visual ni detonan una recarga completa de la ventana. En eventos como dar clic a un botón de descarga, funciones implementadas en JavaScript se ejecutan en segundo plano levantando peticiones asíncronas hacia componentes de análisis (evidenciado por la solicitud POST devuelta con un estatus *204 No Content*), facilitando la captura de métricas de forma silenciosa para el usuario.
 
 Las conclusiones deben explicar lo aprendido a partir de la evidencia y
 no limitarse a describir las actividades realizadas.
@@ -360,16 +367,16 @@ laboratorio-01/
 
 Antes de entregar, verifique:
 
--   [ ] El `README.md` se visualiza correctamente en GitHub.
--   [ ] Las imágenes se muestran dentro del README.
--   [ ] Se documentaron al menos cinco recursos.
--   [ ] Se analizó una solicitud HTTP.
--   [ ] Se identificó y modificó un elemento del DOM.
--   [ ] Se analizó una interacción de la aplicación.
--   [ ] El diagrama final corresponde a lo observado.
--   [ ] Se diferenciaron elementos observados e inferidos.
--   [ ] Se redactaron tres conclusiones técnicas.
--   [ ] Se realizó `commit` y `push` al repositorio.
+-   [x] El `README.md` se visualiza correctamente en GitHub.
+-   [x] Las imágenes se muestran dentro del README.
+-   [x] Se documentaron al menos cinco recursos.
+-   [x] Se analizó una solicitud HTTP.
+-   [x] Se identificó y modificó un elemento del DOM.
+-   [x] Se analizó una interacción de la aplicación.
+-   [x] El diagrama final corresponde a lo observado.
+-   [x] Se diferenciaron elementos observados e inferidos.
+-   [x] Se redactaron tres conclusiones técnicas.
+-   [x] Se realizó `commit` y `push` al repositorio.
 
 ------------------------------------------------------------------------
 
