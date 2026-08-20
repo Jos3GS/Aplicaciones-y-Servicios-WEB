@@ -280,7 +280,7 @@ Inclúyala aquí:
 **Explique la relación entre la acción realizada por el usuario y la
 solicitud observada.**
 
-> Escriba aquí su respuesta.
+> La solicitud observada no es el archivo descargándose, sino un evento de analíticas que se dispara en segundo plano al hacer clic. Sirve para registrar en las estadísticas de la web qué botón se presionó y qué archivo se descargó, devolviendo un estado 204 para confirmar que se recibió el dato sin interrumpir la navegación del usuario.
 
 ------------------------------------------------------------------------
 
@@ -301,7 +301,8 @@ Reemplace el siguiente bloque con su diagrama:
 
 ``` mermaid
 flowchart LR
-    A[Construya aquí] --> B[su flujo observado]
+    A[Usuario] --> B[Navegador]
+    B --> C[Solicitud HTTP]
 ```
 
 ------------------------------------------------------------------------
