@@ -1,0 +1,1 @@
+"""Funciones del cliente integrador, organizadas por responsabilidad."""
