@@ -1,7 +1,6 @@
 # Decisiones de integración
 
-El proveedor B entrega fechas sin zona horaria. Se asume, con confirmación del
-equipo, que representan hora local colombiana (UTC-05:00). Se agrega ese
+El proveedor B entrega fechas sin zona horaria. Se asume que representan hora local colombiana (UTC-05:00). Se agrega ese
 desplazamiento sin cambiar la hora de la medición. Por ejemplo,
 `01/09/2026 06:00` se normaliza como `2026-09-01T06:00:00-05:00`.
 
